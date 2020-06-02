@@ -34,10 +34,23 @@ app.post('/account',(req,res)=>{
         }
     })
 })
+
+app.get("/account",(req,res)=>{
+    fs.readFile("accounts.json","utf8",(err,data)=>{
+        if(!err){
+            let datajson = JSON.parse(data)//Atribuindo ao datajson para n modificar o data
+            delete datajson.nextid //Removendo o next id
+            res.status(200).send(datajson)
+        }else{
+            res.status(400).send({error: err.message})
+        }
+    })
+})
+
 app.listen(3000,()=>{
     //Criando a estruta json para quando não tivermos a file accounts.json, para cria-lo de acordo com oque foi estipulado 
     try{
-        fs.readFile("accounts.json","utf-8",(err,data) =>{
+        fs.readFile("accounts.json","utf8",(err,data) =>{
             if(err){
                 const initialJson = {
                     nextid: 1,
